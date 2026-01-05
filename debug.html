@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Test</title>
+</head>
+
+<body>
+    <h1>Debug Test</h1>
+    <div id="output"></div>
+
+    <script type="module">
+        const output = document.getElementById('output');
+
+        try {
+            output.innerHTML += '<p>Starting import test...</p>';
+
+            // Test Three.js import
+            import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
+            output.innerHTML += '<p>✓ Three.js imported successfully</p>';
+            output.innerHTML += '<p>THREE.Scene exists: ' + (typeof THREE.Scene !== 'undefined') + '</p>';
+
+            // Test OrbitControls import
+            const { OrbitControls } = await import('https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/controls/OrbitControls.js');
+            output.innerHTML += '<p>✓ OrbitControls imported successfully</p>';
+
+            // Test cat-model import
+            const { CatModel } = await import('./cat-model.js');
+            output.innerHTML += '<p>✓ CatModel imported successfully</p>';
+
+            // Try creating a cat model
+            const cat = new CatModel();
+            output.innerHTML += '<p>✓ CatModel created successfully</p>';
+            output.innerHTML += '<p>Cat group children: ' + cat.getGroup().children.length + '</p>';
+
+            output.innerHTML += '<p style="color: green; font-weight: bold;">ALL TESTS PASSED!</p>';
+
+        } catch (error) {
+            output.innerHTML += '<p style="color: red; font-weight: bold;">ERROR: ' + error.message + '</p>';
+            output.innerHTML += '<pre>' + error.stack + '</pre>';
+            console.error('Error:', error);
+        }
+    </script>
+</body>
+
+</html>

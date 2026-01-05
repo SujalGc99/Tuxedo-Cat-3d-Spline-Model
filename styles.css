@@ -1,0 +1,321 @@
+/* ===== CSS Variables & Design System ===== */
+:root {
+    /* Colors */
+    --color-primary: #6366f1;
+    --color-primary-light: #818cf8;
+    --color-primary-dark: #4f46e5;
+    --color-secondary: #ec4899;
+    --color-accent: #f59e0b;
+
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --gradient-glass: linear-gradient(135deg, rgba(20, 20, 30, 0.6) 0%, rgba(20, 20, 30, 0.4) 100%);
+    --gradient-glass-hover: linear-gradient(135deg, rgba(30, 30, 50, 0.8) 0%, rgba(30, 30, 50, 0.6) 100%);
+
+    /* Dark theme colors */
+    --bg-primary: #0a0a0f;
+    --text-primary: #ffffff;
+    --text-secondary: #b4b4c8;
+
+    /* Spacing & Layout */
+    --radius-lg: 1rem;
+    --transition-base: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ===== Reset & Base Styles ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    overflow: hidden;
+    /* Full screen, no scroll */
+    width: 100vw;
+    height: 100vh;
+}
+
+/* ===== Full Screen Canvas ===== */
+#canvas-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+#canvas3d {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+/* ===== UI Overlay ===== */
+.ui-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    pointer-events: none;
+    /* Let clicks pass through to canvas */
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* Header */
+.header {
+    pointer-events: auto;
+    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+.title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    margin-top: 0.5rem;
+}
+
+/* Floating Control Panel */
+.floating-panel {
+    pointer-events: auto;
+    background: var(--gradient-glass);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    width: 320px;
+    max-height: 80vh;
+    overflow-y: auto;
+    position: absolute;
+    right: 2rem;
+    top: 2rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    transform: translateX(0);
+    transition: var(--transition-base);
+}
+
+.floating-panel.hidden {
+    transform: translateX(120%);
+}
+
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.panel-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+/* Minimal Toggle Button for Panel */
+.panel-toggle {
+    pointer-events: auto;
+    position: absolute;
+    right: 2rem;
+    top: 2rem;
+    width: 48px;
+    height: 48px;
+    background: var(--gradient-glass);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition-base);
+    z-index: 10;
+    color: white;
+}
+
+.panel-toggle:hover {
+    background: var(--gradient-glass-hover);
+    transform: scale(1.05);
+}
+
+/* Controls Styling */
+.control-group {
+    margin-bottom: 1.5rem;
+}
+
+.control-group label {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.slider {
+    width: 100%;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    -webkit-appearance: none;
+    cursor: pointer;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    background: var(--color-primary);
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(99, 102, 241, 0.5);
+    transition: transform 0.2s;
+}
+
+.slider::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+}
+
+.color-input-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+}
+
+.color-picker {
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+.select-wrapper {
+    position: relative;
+}
+
+.select {
+    width: 100%;
+    padding: 0.75rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 0.5rem;
+    color: white;
+    font-family: inherit;
+    appearance: none;
+    cursor: pointer;
+}
+
+.select option {
+    background-color: var(--bg-primary);
+    color: white;
+}
+
+.select:hover {
+    border-color: var(--color-primary);
+}
+
+/* Checkbox */
+.checkbox-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    cursor: pointer;
+}
+
+.checkbox {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--color-primary);
+    cursor: pointer;
+}
+
+/* Footer / Info */
+.footer {
+    pointer-events: auto;
+    display: flex;
+    gap: 2rem;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    background: var(--gradient-glass);
+    padding: 1rem 1.5rem;
+    border-radius: 2rem;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    align-self: center;
+    margin-bottom: 2rem;
+}
+
+/* Loading */
+.loading {
+    position: fixed;
+    inset: 0;
+    background: var(--bg-primary);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    transition: opacity 0.5s;
+}
+
+.loading.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(255, 255, 255, 0.1);
+    border-top-color: var(--color-primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 1rem;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .floating-panel {
+        width: 100%;
+        left: 0;
+        bottom: 0;
+        top: auto;
+        right: auto;
+        border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+        transform: translateY(100%);
+        transition: transform 0.3s ease;
+    }
+
+    .floating-panel.visible {
+        transform: translateY(0);
+    }
+
+    .panel-toggle {
+        top: auto;
+        bottom: 2rem;
+        right: 2rem;
+    }
+}

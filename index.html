@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Ultrarealistic 3D Cat Model - Spline based visualization">
+    <title>3D Cat Model | Tuxedo Edition</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <!-- Import Map -->
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+            }
+        }
+    </script>
+
+    <!-- Canvas Layer -->
+    <div id="canvas-container">
+        <canvas id="canvas3d"></canvas>
+    </div>
+
+    <!-- UI Overlay -->
+    <div class="ui-overlay">
+        <!-- Header -->
+        <header class="header">
+            <h1 class="title">Tuxedo Cat</h1>
+            <p class="subtitle">Interactive Spline Model</p>
+        </header>
+
+        <!-- Toggle Button (Visible when panel is hidden) -->
+        <button id="toggle-panel" class="panel-toggle" aria-label="Toggle Controls">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path
+                    d="M12 6V4M12 20v-2M4 12H2m20 0h-2m-2.586-7.414l-1.414 1.414M7 17l-1.414 1.414M17 17l1.414 1.414M7 7L5.586 5.586" />
+            </svg>
+        </button>
+
+        <!-- Floating Controls -->
+        <aside id="controls" class="floating-panel">
+            <div class="panel-header">
+                <h2 class="panel-title">Customization</h2>
+                <button id="close-panel" style="background:none; border:none; color:white; cursor:pointer;">✕</button>
+            </div>
+
+            <div class="control-group">
+                <label>Coat Color (Black)</label>
+                <div class="color-input-wrapper">
+                    <input type="color" id="furColor" value="#1a1a1a" class="color-picker">
+                    <span style="font-size: 0.8rem; opacity: 0.7;">Click to change</span>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label>Lighting Intensity</label>
+                <input type="range" id="lightIntensity" min="0" max="2" step="0.1" value="1.2" class="slider">
+            </div>
+
+            <div class="control-group">
+                <label>Pose</label>
+                <div class="select-wrapper">
+                    <select id="animation" class="select">
+                        <option value="idle">Idle (Default)</option>
+                        <option value="sit">Sitting</option>
+                        <option value="stand">Standing</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="checkbox-wrapper">
+                    <input type="checkbox" id="autoRotate" class="checkbox" checked>
+                    <span>Auto Rotate</span>
+                </label>
+            </div>
+
+            <div class="control-group">
+                <label class="checkbox-wrapper">
+                    <input type="checkbox" id="wireframe" class="checkbox">
+                    <span>View Wireframe</span>
+                </label>
+            </div>
+
+            <button id="resetCamera"
+                style="width:100%; padding:0.8rem; background:var(--color-primary); color:white; border:none; border-radius:0.5rem; font-weight:600; cursor:pointer; margin-top:1rem;">
+                Reset Camera
+            </button>
+        </aside>
+
+        <!-- Minimal Footer -->
+        <footer class="footer">
+            <span>Scroll to Zoom</span>
+            <span>•</span>
+            <span>Drag to Rotate</span>
+            <span>•</span>
+            <span>Right-click to Pan</span>
+        </footer>
+    </div>
+
+    <!-- Loading Screen -->
+    <div id="loading" class="loading">
+        <div class="spinner"></div>
+        <p>Generating Splines...</p>
+    </div>
+
+    <script type="module" src="app.js"></script>
+    <script>
+        // Simple UI Logic for Panel Toggle
+        const panel = document.getElementById('controls');
+        const toggleBtn = document.getElementById('toggle-panel');
+        const closeBtn = document.getElementById('close-panel');
+
+        toggleBtn.addEventListener('click', () => {
+            panel.classList.remove('hidden');
+            toggleBtn.style.opacity = '0';
+            toggleBtn.style.pointerEvents = 'none';
+        });
+
+        closeBtn.addEventListener('click', () => {
+            panel.classList.add('hidden');
+            toggleBtn.style.opacity = '1';
+            toggleBtn.style.pointerEvents = 'auto';
+        });
+
+        // Hide toggle initially since panel is open
+        toggleBtn.style.opacity = '0';
+        toggleBtn.style.pointerEvents = 'none';
+    </script>
+</body>
+
+</html>
